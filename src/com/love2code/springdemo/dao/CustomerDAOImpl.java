@@ -14,7 +14,6 @@ import com.love2code.springdemo.entity.Customer;
 public class CustomerDAOImpl implements CustomerDAO {
 	
 	// need to inject session factory
-	
 	@Autowired
 	private SessionFactory sessionFactory;
 
