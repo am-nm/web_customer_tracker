@@ -51,15 +51,5 @@ public class CustomerController {
 		customerService.saveCustomer(theCustomer);
 		
 		return "redirect:/customer/list";
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 }
