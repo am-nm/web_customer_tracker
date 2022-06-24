@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.love2code.springdemo.entity.Customer;
+import com.love2code.springdemo.util.SortUtils;
 
 @Repository
 public class CustomerDAOImpl implements CustomerDAO {
@@ -80,7 +81,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		Session currentSession = sessionFactory.getCurrentSession();
 		
 		// search by name only if search name is not null
-		Query query = null;
+		Query<Customer> query = null;
 		
 		if(searchName != null && searchName.trim().length() > 0) {
 			
@@ -98,6 +99,51 @@ public class CustomerDAOImpl implements CustomerDAO {
 		}
 		
 		// execeute query and get result list
+		List<Customer> customers = query.getResultList();
+		
+		return customers;
+	}
+
+	@Override
+	public List<Customer> getCustomers(int sortField) {
+		
+		// get current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		// determine sort field
+		String fieldName = null;
+		
+		switch(sortField) {
+		
+		case SortUtils.FIRST_NAME:
+			
+			fieldName = "firstName";
+			
+			break;
+			
+		case SortUtils.LAST_NAME:
+			
+			fieldName = "lastName";
+			
+			break;
+			
+		case SortUtils.EMAIL:
+			
+			fieldName = "email";
+			
+			break;
+			
+			default: 
+				
+				// if nothing matches default to sorting by last name
+				
+				fieldName = "lastName";
+		}
+		
+		// create a query
+		Query<Customer> query = currentSession.createQuery("from Customer order by " + fieldName, Customer.class);
+		
+		// execute query and get result
 		List<Customer> customers = query.getResultList();
 		
 		return customers;
